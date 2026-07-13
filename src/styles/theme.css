@@ -1,0 +1,88 @@
+/**
+ * THEME TOKENS
+ * Single source of truth for the dark theme. Every colour, radius, spacing
+ * and typography value used across the app should reference one of these
+ * custom properties — nothing hardcoded in component styles.
+ *
+ * Palette matches the Smarkets dark market view: near-black background,
+ * white / light-grey text, green for buy/positive, blue for sell/accent.
+ */
+
+:root {
+  /* ---- Surfaces (near-black, layered) — cards are borderless fills ---- */
+  --color-bg: #08090b; /* page background, near-black */
+  --color-surface: #131417; /* cards, panels (no stroke) */
+  --color-surface-raised: #202226; /* filled pills, hover fills */
+  --color-surface-sunken: #0d0e10; /* insets, search field */
+
+  /* ---- Borders / dividers (subtle, internal only) ---- */
+  --color-border: #202226;
+  --color-border-strong: #2c2f34;
+
+  /* ---- Text ---- */
+  --color-text: #f2f5f8; /* primary white/near-white */
+  --color-text-secondary: #aab4bf; /* light grey */
+  --color-text-muted: #6c7783; /* dim grey, labels/meta */
+
+  /* ---- Brand / semantic ---- */
+  --color-buy: #12d18e; /* green — primary actions / positive */
+  --color-buy-strong: #1ee08c;
+  --color-buy-soft: rgba(18, 209, 142, 0.14);
+
+  /* Exchange price colours: Back = blue, Lay = pink (Smarkets) */
+  --color-back: #4c9dff; /* blue — back price */
+  --color-back-soft: rgba(76, 157, 255, 0.14);
+  --color-lay: #e5608a; /* pink — lay price */
+  --color-lay-soft: rgba(229, 96, 138, 0.16);
+
+  --color-sell: #4c9dff; /* blue — accent */
+  --color-accent: #12d18e; /* primary accent = brand green */
+  --color-warning: #f5b93b; /* gold — favourite stars */
+  --color-live: #ff4d4f; /* live/in-play indicator red */
+
+  /* Graph line colours */
+  --line-home: #4c9dff; /* Switzerland — blue */
+  --line-draw: #9b7dff; /* Draw — purple */
+  --line-away: #12d18e; /* Colombia — green */
+
+  /* ---- Radii ---- */
+  --radius-sm: 6px;
+  --radius-md: 9px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+
+  /* ---- Spacing scale ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* ---- Typography — Inter everywhere (self-hosted variable font) ---- */
+  --font-sans: "Inter Variable", "Inter", system-ui, sans-serif;
+  --font-mono: "Inter Variable", "Inter", system-ui, sans-serif;
+
+  --text-xs: 11px;
+  --text-sm: 12px;
+  --text-base: 14px;
+  --text-md: 16px;
+  --text-lg: 18px;
+  --text-xl: 22px;
+  --text-2xl: 28px;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* ---- Layout ---- */
+  --nav-height: 56px;
+  --page-max-width: 1280px;
+  --sidebar-width: 340px;
+  --content-gap: 20px;
+
+  /* ---- Elevation ---- */
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
+}

@@ -1,0 +1,218 @@
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  height: var(--nav-height);
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+/* ---- Logo ---- */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  /* colour vars consumed by the inlined logo SVG */
+  --logo-primary: var(--color-text);
+  --logo-accent: var(--color-buy);
+}
+
+.logo svg {
+  display: block;
+  height: 22px;
+  width: auto;
+}
+
+/* ---- Search ---- */
+.search {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.searchIcon {
+  position: absolute;
+  left: var(--space-3);
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--space-8) 0 42px;
+  background: var(--color-surface);
+  border: none;
+  border-radius: var(--radius-pill);
+  color: var(--color-text);
+  font-size: var(--text-base);
+  outline: none;
+}
+
+.searchInput::placeholder {
+  color: var(--color-text-muted);
+}
+
+.searchKey {
+  position: absolute;
+  right: var(--space-3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  pointer-events: none;
+}
+
+/* ---- Auth area ---- */
+.auth {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.iconBtn {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+}
+
+.login {
+  height: 36px;
+  padding: 0 var(--space-4);
+  background: transparent;
+  border: 1px solid var(--color-buy);
+  color: var(--color-buy);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  border-radius: var(--radius-pill);
+}
+
+.signup {
+  height: 36px;
+  padding: 0 var(--space-4);
+  background: var(--color-buy);
+  border: 1px solid var(--color-buy);
+  color: #05120c;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  border-radius: var(--radius-pill);
+}
+
+/* ---- Category row ---- */
+.categories {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+  padding: var(--space-2) var(--space-4);
+}
+
+.catScroll {
+  display: flex;
+  gap: var(--space-1);
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.category {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  white-space: nowrap;
+  flex-shrink: 0;
+  height: 34px;
+  padding: 0 var(--space-3);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+}
+
+.catIcon {
+  color: var(--color-text-secondary);
+}
+
+.inplayIcon {
+  color: var(--color-buy);
+}
+
+.star {
+  color: var(--color-warning);
+}
+
+.overflow {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  width: 34px;
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+}
+
+.profitHub {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+  height: 34px;
+  padding: 0 var(--space-3);
+  background: transparent;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+}
+
+/* ---- Mobile ---- */
+@media (max-width: 640px) {
+  .inner {
+    gap: var(--space-2);
+    padding: 0 var(--space-3);
+  }
+
+  .searchKey {
+    display: none;
+  }
+
+  .iconBtn,
+  .login {
+    display: none;
+  }
+
+  .categories {
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .profitHub {
+    display: none;
+  }
+}

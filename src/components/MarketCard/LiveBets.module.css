@@ -1,0 +1,51 @@
+/* Left-column bet stream, overlaid on the graph. */
+.stream {
+  position: absolute;
+  left: 6px;
+  top: 24px;
+  bottom: 44px;
+  width: 78px;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bet {
+  position: absolute;
+  bottom: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  will-change: transform, opacity;
+  animation: betFloat 4.2s ease-out forwards;
+}
+
+/* Float from the bottom up; fade in low, fade out as it nears the top. */
+@keyframes betFloat {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  62% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-160px);
+    opacity: 0;
+  }
+}
+
+.colombia {
+  color: var(--line-away);
+}
+
+.switzerland {
+  color: var(--line-home);
+}
+
+.draw {
+  color: var(--line-draw);
+}

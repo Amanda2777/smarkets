@@ -1,0 +1,233 @@
+.ticket {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+}
+
+/* Inside the mobile sheet the wrapper card styling is dropped */
+.bare {
+  padding: 0;
+  background: none;
+  border-radius: 0;
+}
+
+/* Side theming */
+.buy {
+  --accent: var(--color-buy);
+  --accent-ink: #05130c;
+}
+
+.sell {
+  --accent: var(--color-back);
+  --accent-ink: #05122a;
+}
+
+/* ---- Header ---- */
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.sideToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.sideLabel {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  color: var(--accent);
+}
+
+.sideChevron {
+  color: var(--accent);
+}
+
+.outcomeName {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
+}
+
+.close {
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  padding: 0;
+}
+
+/* ---- Market ---- */
+.market {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.marketIcon {
+  color: var(--color-text);
+  flex-shrink: 0;
+}
+
+.marketText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.marketName {
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+}
+
+.matchName {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* ---- Stake stepper ---- */
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
+  padding: var(--space-2) 0;
+}
+
+.stepBtn {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  color: var(--color-text-secondary);
+  font-size: 26px;
+  line-height: 1;
+}
+
+.stakeWrap {
+  display: inline-flex;
+  align-items: baseline;
+  color: var(--color-text-muted);
+  font-size: 34px;
+  font-weight: var(--weight-semibold);
+}
+
+.stakeActive {
+  color: var(--color-text);
+}
+
+.currency {
+  font: inherit;
+}
+
+.stakeInput {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  min-width: 1ch;
+  text-align: left;
+}
+
+.stakeInput::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* ---- Available ---- */
+.available {
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* ---- Price / payout rows ---- */
+.rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) 0;
+}
+
+.payoutRow {
+  border-top: 1px solid var(--color-border);
+}
+
+.rowLabel {
+  font-size: var(--text-md);
+  color: var(--color-text);
+}
+
+.priceValue {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--accent);
+  padding: 0 2px 4px;
+  color: var(--accent);
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.payout {
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Actions ---- */
+.actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.submit {
+  flex: 1;
+  height: 52px;
+  background: var(--accent);
+  border: none;
+  border-radius: var(--radius-pill);
+  color: var(--accent-ink);
+  font-size: var(--text-md);
+  font-weight: var(--weight-bold);
+}
+
+.schedule {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  color: var(--color-text);
+}
+

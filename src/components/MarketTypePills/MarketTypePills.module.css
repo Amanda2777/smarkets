@@ -1,0 +1,25 @@
+.row {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-1) 0;
+}
+
+.pill {
+  flex-shrink: 0;
+  white-space: nowrap;
+  height: 36px;
+  padding: 0 var(--space-4);
+  background: var(--color-surface);
+  border: none;
+  border-radius: var(--radius-pill);
+  color: var(--color-text-secondary);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+}
+
+.active {
+  background: var(--color-text);
+  color: #0a0a0b;
+  font-weight: var(--weight-semibold);
+}

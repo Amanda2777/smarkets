@@ -1,0 +1,51 @@
+/* Global reset + base element styling. Uses tokens from theme.css. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* Thin, dark scrollbars for the horizontally scrollable rows */
+.u-scroll-x {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.u-scroll-x::-webkit-scrollbar {
+  height: 6px;
+}
+
+.u-scroll-x::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: var(--radius-pill);
+}
+
+.u-scroll-x::-webkit-scrollbar-track {
+  background: transparent;
+}
