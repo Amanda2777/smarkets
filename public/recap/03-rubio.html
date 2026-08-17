@@ -1,0 +1,108 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rubio card</title>
+<!--
+  Dropped in as generated. Edits, all of them the slide contract:
+    1. body padding 20px → 0, min-height 100vh → 100%
+    2. #stg padding 1rem 0 → 0
+    3. removed the trailing `setTimeout(... classList.add('go'), 60)` self-trigger.
+    4. the canvas line-growth is a ONE-SHOT animation, so unlike the looping
+       cards it can't start at script-parse time — the iframe loads while the
+       slide is still off-screen, and the lines would finish rising before the
+       card is ever seen. It now starts (and restarts) when `.go` is applied,
+       in step with the CSS text animations.
+    5. the raf loop ran forever redrawing an identical static frame once the
+       lines had finished. It now stops when the animation completes, which is
+       what the original `// keep drawing (static after complete)` intended.
+-->
+<style>body{margin:0;background:#000;display:flex;align-items:center;justify-content:center;min-height:100%;padding:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}</style></head><body><div class="sr-only">Rubio card: about ten vertical candidate lines topped with dots rise one by one to various heights; Rubio's line is brighter and climbs with his name pill. Flag image top-right, text below.</div>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+*{box-sizing:border-box;}
+#stg{width:360px;max-width:100%;margin:0 auto;padding:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;}
+#card{position:relative;width:360px;max-width:100%;height:470px;border-radius:18px;overflow:hidden;background:#141414;}
+.top{position:absolute;top:0;left:0;right:0;height:210px;overflow:hidden;z-index:1;}
+.linecv{position:absolute;inset:0;width:100%;height:100%;}
+.flag{position:absolute;top:26px;right:6px;width:52%;filter:grayscale(1) contrast(1.1);opacity:0;transform:translateY(10px);z-index:2;}
+#card.go .flag{animation:fadeUp .9s .15s cubic-bezier(.22,1,.36,1) forwards;}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+.pillrow{position:absolute;top:150px;left:26px;z-index:4;display:flex;align-items:center;gap:9px;opacity:0;}
+#card.go .pillrow{animation:up 0.45s .61s forwards;}
+.pill{background:#0CCD93;color:#04140b;font-size:13px;font-weight:500;padding:3px 12px;border-radius:20px;}
+.pilstat{color:#0CCD93;font-size:20px;font-weight:500;}
+.tx{position:absolute;left:26px;right:24px;top:230px;z-index:3;}
+.hk{font-size:21px;font-weight:500;line-height:1.22;color:#fff;margin:0 0 12px;opacity:0;transform:translateY(8px);}
+#card.go .hk{animation:up 0.45s .68s forwards;}
+.big{font-size:22px;font-weight:500;color:#0CCD93;line-height:1;margin:0 0 8px;opacity:0;transform:translateY(8px);}
+#card.go .big{animation:up 0.45s .75s forwards;}
+.dt{font-size:12px;font-weight:400;color:#6f6f6f;margin:0 0 16px;opacity:0;}
+#card.go .dt{animation:fade 0.45s .82s forwards;}
+.ds{font-size:13px;font-weight:400;color:#b8b8b8;line-height:1.5;margin:0;opacity:0;transform:translateY(8px);}
+#card.go .ds{animation:up 0.45s .79s forwards;}
+@keyframes up{to{opacity:1;transform:translateY(0);}}
+@keyframes fade{to{opacity:1;}}
+</style>
+<div id="stg"><div id="card">
+ <div class="top"><canvas class="linecv" id="lc" width="720" height="420"></canvas><img class="flag" src="./flag.png" alt="" onerror="this.style.display='none'"/></div>
+ <div class="pillrow"><span class="pill">Rubio</span><span class="pilstat">11%</span></div>
+ <div class="tx">
+   <div class="hk">The fastest climb in the field</div>
+   <div class="big">7% &rarr; 17%</div>
+   <div class="dt">spring 2026</div>
+   <div class="ds">No candidate rose faster over a six-week stretch. Rubio more than doubled, jumping into the top tier before settling back to 11%.</div>
+ </div>
+</div></div><script>
+const cv=document.getElementById('lc'),ctx=cv.getContext('2d');
+const W=cv.width,H=cv.height;const GREEN='#0CCD93';
+// ~11 candidate lines. value 0..1 = height. Rubio highlighted.
+const cands=[
+ {h:0.30},{h:0.45},{h:0.62,rubio:true},{h:0.38},{h:0.52},{h:0.28},{h:0.70},{h:0.42},{h:0.34},{h:0.58},{h:0.48}
+];
+const n=cands.length;
+const baseY=H*0.94;                     // lines grow up from near the bottom
+const topPad=H*0.14;
+const x0=W*0.06, x1=W*0.62;             // lines occupy left ~60%, leaving room for flag
+const stepX=(x1-x0)/(n-1);
+cands.forEach((c,i)=>{c.x=x0+i*stepX; c.targetLen=(baseY-topPad)*c.h;});
+const PER=0.13;                          // stagger between lines
+const GROW=0.5;                          // each line's grow time
+const DONE=n*PER+GROW+0.5;               // everything has landed by here
+function draw(t){
+ ctx.clearRect(0,0,W,H);
+ cands.forEach((c,i)=>{
+   const start=i*PER;
+   const p=Math.max(0,Math.min(1,(t-start)/GROW));
+   const e=p<0.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+   const len=c.targetLen*e;
+   const topY=baseY-len;
+   // line
+   ctx.strokeStyle=c.rubio?GREEN:'rgba(140,150,150,0.30)';
+   ctx.lineWidth=c.rubio?2.4:1.4;
+   ctx.globalAlpha=c.rubio?0.95:0.5;
+   ctx.beginPath();ctx.moveTo(c.x,baseY);ctx.lineTo(c.x,topY);ctx.stroke();
+   // dot at top
+   if(p>0){
+     ctx.globalAlpha=c.rubio?1:0.7;
+     ctx.fillStyle=c.rubio?GREEN:'#9aa3a3';
+     ctx.beginPath();ctx.arc(c.x,topY,c.rubio?4:2.4,0,7);ctx.fill();
+     if(c.rubio){ctx.globalAlpha=0.25;ctx.beginPath();ctx.arc(c.x,topY,9,0,7);ctx.fill();}
+   }
+ });
+ ctx.globalAlpha=1;
+}
+// The lines rise when the slide arrives, not when the iframe loads, and the
+// loop stops once they have landed rather than redrawing a static frame.
+const card=document.getElementById('card');
+let t0=null,running=false;
+function frame(now){
+ const t=(now-t0)/1000;
+ draw(t);
+ if(t<DONE) requestAnimationFrame(frame); else running=false;
+}
+function play(){
+ t0=performance.now();
+ if(!running){running=true;requestAnimationFrame(frame);}
+}
+draw(0);
+new MutationObserver(()=>{if(card.classList.contains('go'))play();})
+ .observe(card,{attributes:true,attributeFilter:['class']});
+if(card.classList.contains('go'))play();
+</script></body></html>

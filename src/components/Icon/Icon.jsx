@@ -204,9 +204,25 @@ const ICONS = {
       <path d="M9 20h6l-.6-3.5h-4.8z" />
     </>
   ),
+  info: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <line x1="12" y1="11" x2="12" y2="16.5" />
+      <circle cx="12" cy="7.75" r="0.9" fill="currentColor" stroke="none" />
+    </>
+  ),
+  sliders: (
+    <>
+      <line x1="3.5" y1="8" x2="20.5" y2="8" />
+      <line x1="3.5" y1="16" x2="20.5" y2="16" />
+      <circle cx="9" cy="8" r="2.4" />
+      <circle cx="15" cy="16" r="2.4" />
+    </>
+  ),
   chevronDown: <polyline points="6,9.5 12,15.5 18,9.5" />,
   chevronUp: <polyline points="6,14.5 12,8.5 18,14.5" />,
   chevronRight: <polyline points="9.5,6 15.5,12 9.5,18" />,
+  chevronLeft: <polyline points="14.5,6 8.5,12 14.5,18" />,
   close: (
     <>
       <line x1="6" y1="6" x2="18" y2="18" />

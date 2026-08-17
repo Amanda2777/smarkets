@@ -1,0 +1,49 @@
+.slip {
+  display: flex;
+  flex-direction: column;
+  gap: var(--content-gap);
+  min-width: 0;
+}
+
+/* ---- Singles / Multiples segmented control ---- */
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+}
+
+.tab {
+  height: 44px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: var(--text-md);
+  font-weight: var(--weight-medium);
+}
+
+.tab:hover {
+  background: var(--color-surface-raised);
+}
+
+/* Active is a solid white pill — same treatment as the Graph view toggle */
+.tabActive,
+.tabActive:hover {
+  background: var(--color-text);
+  color: #0a0a0b;
+  font-weight: var(--weight-semibold);
+}
+
+/* ---- Empty states ---- */
+.empty {
+  margin: 0;
+  padding: var(--space-6) var(--space-5);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+  text-align: center;
+}

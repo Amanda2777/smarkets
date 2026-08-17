@@ -6,8 +6,10 @@ import MarketTypePills from "./components/MarketTypePills/MarketTypePills.jsx";
 import CorrectScoreCard from "./components/CorrectScoreCard/CorrectScoreCard.jsx";
 import Sidebar from "./components/Sidebar/Sidebar.jsx";
 import BetSheet from "./components/MarketCard/BetSheet.jsx";
+import PoliticsPage from "./pages/PoliticsPage.jsx";
 import { usePriceTicker } from "./components/MarketCard/usePriceTicker.js";
 import { useMediaQuery } from "./hooks/useMediaQuery.js";
+import { MARKET } from "./data/election.js";
 import styles from "./App.module.css";
 
 let ticketId = 0;
@@ -16,8 +18,12 @@ let ticketId = 0;
  * App shell. Owns the live price feed and the stack of open bet tickets so
  * the tickets can render in the sidebar (in line with the portfolio card),
  * each new bet pushing the previously opened ones — and Live match — down.
+ *
+ * Two views share the shell: the football match view and the News and
+ * Politics market page, switched from the top-nav category row.
  */
 export default function App() {
+  const [page, setPage] = useState("politics"); // "politics" | "match"
   const priceRows = usePriceTicker();
   const [tickets, setTickets] = useState([]);
   // On mobile, open bets become a bottom sheet instead of sidebar cards.
@@ -43,9 +49,19 @@ export default function App() {
     setTickets((prev) => prev.map((t) => (t.id === id ? { ...t, side } : t)));
   }, []);
 
+  if (page === "politics") {
+    return (
+      <div className={styles.app}>
+        <TopNav onSelectPage={setPage} />
+        <Breadcrumb trail={MARKET.trail} />
+        <PoliticsPage />
+      </div>
+    );
+  }
+
   return (
     <div className={styles.app}>
-      <TopNav />
+      <TopNav onSelectPage={setPage} />
       <Breadcrumb />
 
       <main className={styles.page}>
@@ -80,4 +96,3 @@ export default function App() {
     </div>
   );
 }
-

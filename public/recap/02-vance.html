@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vance card</title>
+<!--
+  Dropped in as generated. Three edits, all of them the slide contract:
+    1. body padding 20px → 0, min-height 100vh → 100%
+    2. #stg padding 1rem 0 → 0
+    3. removed the trailing `setTimeout(... classList.add('go'), 50)` self-trigger —
+       the carousel adds `.go` when the slide scrolls into view and strips it on
+       the way out. Self-triggering would burn the animation on iframe load,
+       before the slide is ever on screen.
+-->
+<style>body{margin:0;background:#000;display:flex;align-items:center;justify-content:center;min-height:100%;padding:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}</style></head><body><div class="sr-only">Vance card: a Capitol dome cutout top-left and a green dot histogram to its right whose columns rise up like a climbing market, looping. Text below matches the other cards' alignment.</div>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+*{box-sizing:border-box;}
+#stg{width:360px;max-width:100%;margin:0 auto;padding:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;}
+#card{position:relative;width:360px;max-width:100%;height:470px;border-radius:18px;overflow:hidden;background:#141414;}
+.top{position:absolute;top:0;left:0;right:0;height:48%;overflow:hidden;z-index:1;}
+.dotcv{position:absolute;inset:0;width:100%;height:100%;}
+.dome{position:absolute;left:7%;top:10%;width:26%;filter:grayscale(1) contrast(1.08);opacity:0;transform:translateY(10px);z-index:2;}
+#card.go .dome{animation:fadeUp .9s .2s cubic-bezier(.22,1,.36,1) forwards;}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+.tx{position:absolute;left:26px;right:24px;top:230px;z-index:3;}
+.hk{font-size:21px;font-weight:500;line-height:1.22;color:#fff;margin:0 0 12px;opacity:0;transform:translateY(8px);}
+#card.go .hk{animation:up 0.45s .27s forwards;}
+.big{font-size:22px;font-weight:500;color:#0CCD93;line-height:1;margin:0 0 8px;opacity:0;transform:translateY(8px);}
+#card.go .big{animation:up 0.45s .34s forwards;}
+.dt{font-size:12px;font-weight:400;color:#6f6f6f;margin:0 0 16px;opacity:0;}
+#card.go .dt{animation:fade 0.45s .41s forwards;}
+.ds{font-size:13px;font-weight:400;color:#b8b8b8;line-height:1.5;margin:0;opacity:0;transform:translateY(8px);}
+#card.go .ds{animation:up 0.45s .38s forwards;}
+@keyframes up{to{opacity:1;transform:translateY(0);}}
+@keyframes fade{to{opacity:1;}}
+</style>
+<div id="stg"><div id="card">
+ <div class="top"><canvas class="dotcv" id="dots" width="720" height="452"></canvas><img class="dome" src="./dome.png" alt="" onerror="this.style.display='none'"/></div>
+ <div class="tx">
+   <div class="hk">The line that never got overtaken</div>
+   <div class="big">20% &rarr; 28%</div>
+   <div class="dt">peaked early 2026</div>
+   <div class="ds">Vance rose to a high near 28%, then eased back. Through every swing in the field below him, his was the one line that stayed on top from start to finish.</div>
+ </div>
+</div></div><script>
+const cv=document.getElementById('dots'),ctx=cv.getContext('2d');
+const W=cv.width,H=cv.height;const G='#0CCD93';
+// histogram region on the right side of the top zone
+const gx0=W*0.34, gx1=W*0.96, gy1=H*0.86; // baseline
+const cols=30;
+// column heights (0..1) forming a rising-then-easing skyline like the reference
+const heights=[0.12,0.16,0.14,0.22,0.30,0.24,0.18,0.14,0.10,0.16,0.22,0.30,0.42,0.55,0.70,0.88,0.72,0.55,0.40,0.30,0.22,0.16,0.26,0.20,0.14,0.30,0.24,0.18,0.12,0.10];
+const cellY=(H*0.44)/12; // vertical spacing between stacked dots
+const colW=(gx1-gx0)/cols;
+const t0=performance.now();
+const RISE=1.8, HOLD=1.2, LOOP=RISE+HOLD; // loops
+function frame(now){
+ const t=(now-t0)/1000;const cyc=t%LOOP;
+ ctx.clearRect(0,0,W,H);ctx.fillStyle=G;
+ const prog=cyc<RISE?cyc/RISE:1;
+ // ease
+ const e=prog<0.5?2*prog*prog:1-Math.pow(-2*prog+2,2)/2;
+ for(let c=0;c<cols;c++){
+   const x=gx0+c*colW+colW*0.5;
+   const maxDots=Math.round(heights[c]*11)+1;
+   // wave so columns rise slightly left-to-right
+   const local=Math.max(0,Math.min(1,(e*1.25)-(c/cols)*0.25));
+   const shown=Math.round(maxDots*local);
+   for(let d=0;d<shown;d++){
+     const y=gy1-d*cellY;
+     const topFade=d===shown-1?0.5:1;
+     ctx.globalAlpha=0.35+0.5*(d/Math.max(1,maxDots))*topFade + 0.15;
+     ctx.beginPath();ctx.arc(x,y,1.7,0,7);ctx.fill();
+   }
+ }
+ ctx.globalAlpha=1;requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script></body></html>

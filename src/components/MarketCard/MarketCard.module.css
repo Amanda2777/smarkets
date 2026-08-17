@@ -210,8 +210,8 @@
 /* Base resting states: buy = green, sell = blue */
 .pillBuy {
   color: var(--color-buy);
-  border-color: rgba(18, 209, 142, 0.45);
-  background: rgba(18, 209, 142, 0.05);
+  border-color: rgba(12, 205, 147, 0.45);
+  background: rgba(12, 205, 147, 0.05);
 }
 
 .pillSell {
@@ -222,7 +222,7 @@
 
 /* Flash on price change — green up-tick, red down-tick */
 .flashUp {
-  background: rgba(18, 209, 142, 0.3);
+  background: rgba(12, 205, 147, 0.3);
   border-color: var(--color-buy);
   color: #eafff6;
 }

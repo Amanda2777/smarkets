@@ -151,7 +151,7 @@
 /* Match the price-row pills: buy = green outline, sell = blue outline, no fill */
 .buy {
   background: transparent;
-  border: 1px solid rgba(18, 209, 142, 0.45);
+  border: 1px solid rgba(12, 205, 147, 0.45);
   color: var(--color-buy);
 }
 

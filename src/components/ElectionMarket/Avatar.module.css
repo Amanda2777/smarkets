@@ -1,0 +1,17 @@
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  /* Square with a slight rounding, not a circle */
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  background: var(--color-surface-raised);
+}
+
+.initials {
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--color-text-secondary);
+}

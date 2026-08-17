@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ossoff card</title>
+<!--
+  Dropped in as generated. Edits, all of them the slide contract:
+    1. body padding 20px → 0, min-height 100vh → 100%
+    2. #stg padding 1rem 0 → 0
+    3. removed the trailing `setTimeout(... classList.add('go'), 60)` self-trigger.
+    4. the square fill is a ONE-SHOT animation, so it can't start at script-parse
+       time — the iframe loads while the slide is off-screen and every square
+       would already be lit before the card is seen. It now starts (and
+       restarts) when `.go` is applied, in step with the CSS text animations.
+    5. the raf loop ran forever redrawing an identical static frame once all
+       the squares had lit. It now stops when the fill completes.
+    6. the dome base64 was byte-identical to card 2's, so it points at the
+       dome.png already sitting alongside these slides.
+-->
+<style>body{margin:0;background:#000;display:flex;align-items:center;justify-content:center;min-height:100%;padding:0}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}</style></head><body><div class="sr-only">Ossoff card: about five rows of small squares to the right of the dome light up one by one, sporadically, to fill about 80%. Dome top-left, text below, Inter medium.</div>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap');
+*{box-sizing:border-box;}
+#stg{width:360px;max-width:100%;margin:0 auto;padding:0;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;}
+#card{position:relative;width:360px;max-width:100%;height:470px;border-radius:18px;overflow:hidden;background:#141414;}
+.top{position:absolute;top:0;left:0;right:0;height:200px;overflow:hidden;z-index:1;}
+.gridcv{position:absolute;inset:0;width:100%;height:100%;}
+.dome{position:absolute;top:36px;left:26px;width:38%;filter:grayscale(1) contrast(1.1);opacity:0;transform:translateY(10px);z-index:2;}
+#card.go .dome{animation:fadeUp .9s .15s cubic-bezier(.22,1,.36,1) forwards;}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+.tx{position:absolute;left:26px;right:24px;top:230px;z-index:3;}
+.hk{font-size:21px;font-weight:500;line-height:1.22;color:#fff;margin:0 0 12px;opacity:0;transform:translateY(8px);}
+#card.go .hk{animation:up 0.45s .61s forwards;}
+.big{font-size:22px;font-weight:500;color:#0CCD93;line-height:1;margin:0 0 8px;opacity:0;transform:translateY(8px);}
+#card.go .big{animation:up 0.45s .68s forwards;}
+.dt{font-size:12px;font-weight:400;color:#6f6f6f;margin:0 0 16px;opacity:0;}
+#card.go .dt{animation:fade 0.45s .75s forwards;}
+.ds{font-size:13px;font-weight:400;color:#b8b8b8;line-height:1.5;margin:0;opacity:0;transform:translateY(8px);}
+#card.go .ds{animation:up 0.45s .71s forwards;}
+@keyframes up{to{opacity:1;transform:translateY(0);}}
+@keyframes fade{to{opacity:1;}}
+</style>
+<div id="stg"><div id="card">
+ <div class="top"><canvas class="gridcv" id="gc" width="720" height="400"></canvas><img class="dome" src="./dome.png" alt="" onerror="this.style.display='none'"/></div>
+ <div class="tx">
+   <div class="hk">A line that only went up</div>
+   <div class="big">3% &rarr; 10%</div>
+   <div class="dt">across 2026</div>
+   <div class="ds">While most candidates swung up and down, Ossoff's line did something rare: it climbed steadily all year, tripling without a single major reversal.</div>
+ </div>
+</div></div><script>
+const cv=document.getElementById('gc'),ctx=cv.getContext('2d');
+const W=cv.width,H=cv.height;const GREEN='#0CCD93';
+// ~5 rows of squares, positioned to the RIGHT of the dome
+const ROWS=5;
+const cell=20, gap=7;
+const gx0=W*0.42, gy0=H*0.30;                 // start right of the dome, vertically centered-ish
+const cols=Math.floor((W*0.95-gx0)/(cell+gap));
+const cells=[];
+for(let r=0;r<ROWS;r++)for(let c=0;c<cols;c++){
+  cells.push({r,c,x:gx0+c*(cell+gap),y:gy0+r*(cell+gap)});
+}
+// choose 80% at random (sporadic), and give each a random order so they light up scattered
+let seed=13;function rnd(){seed=(seed*9301+49297)%233280;return seed/233280;}
+cells.forEach(c=>{c.rnd=rnd();});
+const shuffled=[...cells].sort((a,b)=>a.rnd-b.rnd);
+const onCount=Math.round(cells.length*0.80);
+shuffled.forEach((c,i)=>{c.on=i<onCount; c.order=i;});
+const PER=0.05;                               // stagger per lit square (sporadic pop-in)
+const DONE=onCount*PER+0.28+0.2;              // everything is lit by here
+function draw(t){
+ ctx.clearRect(0,0,W,H);
+ cells.forEach(c=>{
+   if(c.on){
+     const start=c.order*PER;
+     const p=Math.max(0,Math.min(1,(t-start)/0.28));
+     if(p<=0){return;}
+     // little pop
+     const s=cell*(0.7+0.3*p);
+     const off=(cell-s)/2;
+     ctx.globalAlpha=0.15+0.82*p;ctx.fillStyle=GREEN;
+     ctx.fillRect(c.x+off,c.y+off,s,s);
+   } else {
+     ctx.globalAlpha=0.10;ctx.fillStyle='#7f8f88';
+     ctx.fillRect(c.x,c.y,cell,cell);
+   }
+ });
+ ctx.globalAlpha=1;
+}
+// The squares fill when the slide arrives, not when the iframe loads, and the
+// loop stops once they are all lit rather than redrawing a static frame.
+const card=document.getElementById('card');
+let t0=null,running=false;
+function frame(now){
+ const t=(now-t0)/1000;
+ draw(t);
+ if(t<DONE) requestAnimationFrame(frame); else running=false;
+}
+function play(){
+ t0=performance.now();
+ if(!running){running=true;requestAnimationFrame(frame);}
+}
+draw(0);
+new MutationObserver(()=>{if(card.classList.contains('go'))play();})
+ .observe(card,{attributes:true,attributeFilter:['class']});
+if(card.classList.contains('go'))play();
+</script></body></html>

@@ -11,7 +11,7 @@
 :root {
   /* ---- Surfaces (near-black, layered) — cards are borderless fills ---- */
   --color-bg: #08090b; /* page background, near-black */
-  --color-surface: #131417; /* cards, panels (no stroke) */
+  --color-surface: #131313; /* cards, panels (no stroke) */
   --color-surface-raised: #202226; /* filled pills, hover fills */
   --color-surface-sunken: #0d0e10; /* insets, search field */
 
@@ -25,9 +25,9 @@
   --color-text-muted: #6c7783; /* dim grey, labels/meta */
 
   /* ---- Brand / semantic ---- */
-  --color-buy: #12d18e; /* green — primary actions / positive */
-  --color-buy-strong: #1ee08c;
-  --color-buy-soft: rgba(18, 209, 142, 0.14);
+  --color-buy: #0CCD93; /* green — primary actions / positive */
+  --color-buy-strong: #1EE0A6;
+  --color-buy-soft: rgba(12, 205, 147, 0.14);
 
   /* Exchange price colours: Back = blue, Lay = pink (Smarkets) */
   --color-back: #4c9dff; /* blue — back price */
@@ -36,14 +36,22 @@
   --color-lay-soft: rgba(229, 96, 138, 0.16);
 
   --color-sell: #4c9dff; /* blue — accent */
-  --color-accent: #12d18e; /* primary accent = brand green */
+  --color-accent: #0CCD93; /* primary accent = brand green */
   --color-warning: #f5b93b; /* gold — favourite stars */
   --color-live: #ff4d4f; /* live/in-play indicator red */
 
   /* Graph line colours */
   --line-home: #4c9dff; /* Switzerland — blue */
   --line-draw: #9b7dff; /* Draw — purple */
-  --line-away: #12d18e; /* Colombia — green */
+  --line-away: #0CCD93; /* Colombia — green */
+
+  /* Multi-outcome graph palette (election / many-runner markets) */
+  --line-green: #0CCD93;
+  --line-purple: #9b7dff;
+  --line-white: #f2f5f8;
+  --line-blue: #4c9dff;
+  --line-pink: #e5608a;
+  --line-gold: #f5b93b;
 
   /* ---- Radii ---- */
   --radius-sm: 6px;
@@ -82,7 +90,16 @@
   --page-max-width: 1280px;
   --sidebar-width: 340px;
   --content-gap: 20px;
+  /* Side gutter — nav, breadcrumb and page all align to this */
+  --page-gutter: 50px;
 
   /* ---- Elevation ---- */
   --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Tighter gutter on small screens — one place, every aligned edge follows */
+@media (max-width: 640px) {
+  :root {
+    --page-gutter: 16px;
+  }
 }

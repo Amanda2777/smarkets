@@ -97,7 +97,7 @@ function MultiTicket({ priceRows, tickets, onRemove, onCloseAll }) {
 
       <div className={styles.actions}>
         <button type="button" className={styles.submit}>
-          Get access
+          Log in or create account
         </button>
         <button
           type="button"

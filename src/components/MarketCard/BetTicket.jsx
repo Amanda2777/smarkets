@@ -15,14 +15,32 @@ const money = (n) =>
  * BetTicket — the Buy/Sell betting slip that opens from a price pill. Green
  * for Buy, blue for Sell; the side chevron toggles between them. Stake steps
  * with +/- (or type it), the price reflects the outcome's live price, and the
- * total payout updates as you stake. Static "Get access" CTA + schedule.
+ * total payout updates as you stake. The market is browsable logged out, so
+ * the CTA is the sign-in prompt rather than a place order button.
+ *
+ * Defaults describe the football match view. A percentage market (the
+ * election page) overrides the market line, the price string and the payout
+ * maths, and swaps the balance line for a liquidity notice.
  */
-export default function BetTicket({ row, side, onSide, onClose, bare = false }) {
+export default function BetTicket({
+  row,
+  side,
+  onSide,
+  onClose,
+  bare = false,
+  marketIcon = "football",
+  marketName = "Full-time result",
+  marketSub = "Switzerland vs Colombia",
+  price,
+  payoutFor,
+  notice,
+}) {
   const [stake, setStake] = useState(0);
   if (!row) return null;
 
-  const priceStr = side === "buy" ? row.buyStr : row.sellStr;
+  const priceStr = price ?? (side === "buy" ? row.buyStr : row.sellStr);
   const priceNum = parseFloat(priceStr);
+  const payout = payoutFor ? payoutFor(stake) : stake * priceNum;
   const isBuy = side === "buy";
 
   const onStakeInput = (e) => {
@@ -59,10 +77,10 @@ export default function BetTicket({ row, side, onSide, onClose, bare = false }) 
       </div>
 
       <div className={styles.market}>
-        <Icon name="football" size={20} className={styles.marketIcon} />
+        <Icon name={marketIcon} size={20} className={styles.marketIcon} />
         <div className={styles.marketText}>
-          <span className={styles.marketName}>Full-time result</span>
-          <span className={styles.matchName}>Switzerland vs Colombia</span>
+          <span className={styles.marketName}>{marketName}</span>
+          <span className={styles.matchName}>{marketSub}</span>
         </div>
       </div>
 
@@ -98,7 +116,14 @@ export default function BetTicket({ row, side, onSide, onClose, bare = false }) 
         </button>
       </div>
 
-      <div className={styles.available}>Available: £{money(AVAILABLE)}</div>
+      {notice ? (
+        <p className={styles.notice}>
+          <Icon name="info" size={20} className={styles.noticeIcon} />
+          {notice}
+        </p>
+      ) : (
+        <div className={styles.available}>Available: £{money(AVAILABLE)}</div>
+      )}
 
       <div className={styles.rows}>
         <div className={styles.row}>
@@ -111,14 +136,14 @@ export default function BetTicket({ row, side, onSide, onClose, bare = false }) 
         <div className={`${styles.row} ${styles.payoutRow}`}>
           <span className={styles.rowLabel}>Total payout</span>
           <span className={styles.payout}>
-            {stake > 0 ? `£${money(stake * priceNum)}` : "—"}
+            {stake > 0 ? `£${money(payout)}` : "—"}
           </span>
         </div>
       </div>
 
       <div className={styles.actions}>
         <button type="button" className={styles.submit}>
-          Get access
+          Log in or create account
         </button>
         <button
           type="button"

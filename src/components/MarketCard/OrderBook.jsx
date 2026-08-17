@@ -10,13 +10,13 @@ const tick = (p) =>
 const decimals = (t) => (t < 0.1 ? 2 : t < 1 ? 1 : 0);
 const fmtPrice = (v) => v.toFixed(decimals(tick(v)));
 
-/* Build `count` price levels from `start`, stepping by the tick ladder. */
-function priceLevels(start, dir, count) {
+/* Build `count` price levels from `start`, stepping by the given ladder. */
+function priceLevels(start, dir, count, stepFor) {
   const out = [];
   let p = start;
   for (let i = 0; i < count; i++) {
     out.push(+p.toFixed(2));
-    p = +(p + dir * tick(p)).toFixed(2);
+    p = +(p + dir * stepFor(p)).toFixed(2);
   }
   return out;
 }
@@ -78,17 +78,27 @@ function Dropdown({ label, value, options, onChange }) {
  * OrderBook — live depth ladder for a selected contract. Asks (sell orders,
  * blue) climb above the price; bids (buy orders, green) fall below it. Sizes
  * count up/down and the depth bars slide as the simulated book adapts.
+ *
+ * Defaults quote decimal odds. A percentage market (e.g. the election page)
+ * passes its own `formatPrice` / `stepFor` ladder and, since its buy sits
+ * *above* its sell, its own `askFrom` / `bidFrom` starting levels.
  */
-export default function OrderBook({ priceRows }) {
+export default function OrderBook({
+  priceRows,
+  formatPrice = fmtPrice,
+  stepFor = tick,
+  askFrom = (r) => r.sell,
+  bidFrom = (r) => r.buy,
+}) {
   const [contract, setContract] = useState(priceRows[0].name);
   const [depth, setDepth] = useState(3);
   const sizes = useOrderBook();
 
   const row = priceRows.find((r) => r.name === contract) || priceRows[0];
 
-  // Asks climb up from the sell price; bids fall down from the buy price.
-  const askPrices = priceLevels(row.sell, +1, depth);
-  const bidPrices = priceLevels(row.buy, -1, depth);
+  // Asks climb away from the price; bids fall away from it.
+  const askPrices = priceLevels(askFrom(row), +1, depth, stepFor);
+  const bidPrices = priceLevels(bidFrom(row), -1, depth, stepFor);
   const askSizes = sizes.ask.slice(0, depth);
   const bidSizes = sizes.bid.slice(0, depth);
 
@@ -135,12 +145,12 @@ export default function OrderBook({ priceRows }) {
               </span>
             </div>
             <div className={`${styles.price} ${styles.sellPrice}`}>
-              {fmtPrice(askPrices[i])}
+              {formatPrice(askPrices[i])}
             </div>
 
             {/* Buy (bid) side */}
             <div className={`${styles.price} ${styles.buyPrice}`}>
-              {fmtPrice(bidPrices[i])}
+              {formatPrice(bidPrices[i])}
             </div>
             <div className={`${styles.size} ${styles.buySize}`}>
               <span

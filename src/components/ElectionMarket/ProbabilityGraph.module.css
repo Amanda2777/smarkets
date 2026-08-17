@@ -1,0 +1,191 @@
+.graph {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* ---- Plot area ---- */
+.plot {
+  position: relative;
+  min-width: 0;
+}
+
+/* Dashed gridlines, drawn as HTML rules so the dash pattern never stretches */
+.grid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed var(--color-border-strong);
+  opacity: 0.7;
+  transform: translateY(-0.5px);
+}
+
+/* Only the lines live in the SVG — it is the one stretchable layer */
+.svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.line {
+  fill: none;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  /* Where supported, the newest step slides in rather than snapping */
+  transition: d 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---- End-of-line labels ---- */
+.endLabel {
+  position: absolute;
+  left: 79%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  pointer-events: none;
+  /* A print is a rare event here — let the label glide so the move is read */
+  transition: top 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.endName {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+
+.endValue {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Axes ---- */
+.yAxis {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 46px;
+}
+
+.yTick {
+  position: absolute;
+  right: 0;
+  transform: translateY(-50%);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.xAxis {
+  position: relative;
+  height: 26px;
+  margin-top: var(--space-1);
+}
+
+.xTick {
+  position: absolute;
+  top: 4px;
+  transform: translateX(-50%);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+/* ---- Controls ---- */
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.timeframes {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.tf {
+  height: 28px;
+  padding: 0 var(--space-3);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+}
+
+.tf:hover {
+  color: var(--color-text-secondary);
+}
+
+.tfActive,
+.tfActive:hover {
+  color: var(--color-text);
+  font-weight: var(--weight-semibold);
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legendBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 720px) {
+  .endValue {
+    font-size: var(--text-md);
+  }
+
+  .endName {
+    font-size: var(--text-xs);
+  }
+
+  .controls {
+    gap: var(--space-2);
+  }
+
+  .legend {
+    gap: var(--space-3);
+  }
+
+  .legendItem {
+    font-size: var(--text-sm);
+  }
+}

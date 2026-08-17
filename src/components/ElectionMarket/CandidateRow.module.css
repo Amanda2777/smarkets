@@ -1,0 +1,151 @@
+.row {
+  border-top: 1px solid var(--color-border);
+}
+
+.rowMain {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 76px;
+}
+
+/* The whole name area is the expand affordance */
+.expand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: var(--space-3) 0;
+  background: transparent;
+  border: none;
+  text-align: left;
+  border-radius: var(--radius-md);
+}
+
+.name {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.volume {
+  font-size: var(--text-md);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Price pills ---- */
+.pills {
+  display: flex;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 88px;
+  height: 40px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  /* Prints are minutes apart, so a flash snaps on and fades out slowly —
+     the long duration here is the fade; the flash classes override it. */
+  transition: background-color 0.9s ease, border-color 0.9s ease,
+    color 0.9s ease;
+}
+
+.pillBuy {
+  color: var(--color-buy);
+  border-color: rgba(12, 205, 147, 0.45);
+  background: rgba(12, 205, 147, 0.05);
+}
+
+.pillSell {
+  color: var(--color-back);
+  border-color: rgba(76, 157, 255, 0.45);
+  background: rgba(76, 157, 255, 0.05);
+}
+
+/* Snap in — only the return to rest is slow */
+.flashUp,
+.flashDown {
+  transition-duration: 0.12s;
+}
+
+.flashUp {
+  background: rgba(12, 205, 147, 0.3);
+  border-color: var(--color-buy);
+  color: #eafff6;
+}
+
+.flashDown {
+  background: rgba(255, 77, 79, 0.3);
+  border-color: var(--color-live);
+  color: #ffeaea;
+}
+
+/* ---- Expanded panel ---- */
+.panel {
+  padding: 0 0 var(--space-5);
+}
+
+.subTabs {
+  display: flex;
+  gap: var(--space-5);
+  margin-bottom: var(--space-3);
+}
+
+.subTab {
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: var(--text-md);
+  font-weight: var(--weight-medium);
+}
+
+.subTab:hover {
+  color: var(--color-text-secondary);
+}
+
+.subTabActive,
+.subTabActive:hover {
+  color: var(--color-text);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 640px) {
+  .rowMain {
+    min-height: 68px;
+    gap: var(--space-3);
+  }
+
+  .expand {
+    gap: var(--space-3);
+  }
+
+  .name {
+    font-size: var(--text-md);
+  }
+
+  .volume {
+    font-size: var(--text-sm);
+  }
+
+  .pill {
+    min-width: 64px;
+    height: 36px;
+    font-size: var(--text-base);
+  }
+}

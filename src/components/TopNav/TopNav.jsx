@@ -3,13 +3,14 @@ import logoSvg from "../../assets/logo-smarkets.svg?raw";
 import styles from "./TopNav.module.css";
 
 /* Static placeholder categories. `icon` names map to the Icon component;
-   `star` marks favourites; `all` / `inplay` drive their leading glyphs. */
+   `star` marks favourites; `all` / `inplay` drive their leading glyphs.
+   `page` is set on the two categories that resolve to a built page. */
 const CATEGORIES = [
   { label: "All", all: true },
   { label: "In-play", inplay: true },
-  { label: "Football", icon: "football", star: true },
+  { label: "Football", icon: "football", star: true, page: "match" },
   { label: "Horse Racing", icon: "horse", star: true },
-  { label: "News and Politics", icon: "news", star: true },
+  { label: "News and Politics", icon: "news", star: true, page: "politics" },
   { label: "Tennis", icon: "tennis", star: true },
   { label: "American Football", icon: "americanfootball" },
   { label: "Basketball", icon: "basketball" },
@@ -20,9 +21,10 @@ const CATEGORIES = [
  * Top navigation bar.
  * Logo, search with keyboard hint, settings icon and auth-state area on
  * the top row; a horizontally scrollable category row with a pinned Profit
- * Hub below. All static — no logic.
+ * Hub below. Categories carrying a `page` switch the view; the rest are
+ * static placeholders.
  */
-export default function TopNav() {
+export default function TopNav({ onSelectPage }) {
   return (
     <header className={styles.nav}>
       <div className={styles.inner}>
@@ -73,7 +75,12 @@ export default function TopNav() {
           aria-label="Categories"
         >
           {CATEGORIES.map((c) => (
-            <button key={c.label} type="button" className={styles.category}>
+            <button
+              key={c.label}
+              type="button"
+              className={styles.category}
+              onClick={() => c.page && onSelectPage?.(c.page)}
+            >
               {c.all && <Icon name="hamburger" size={18} className={styles.catIcon} />}
               {c.inplay && (
                 <Icon name="inplay" size={18} className={styles.inplayIcon} />
